@@ -1,4 +1,4 @@
-FROM php:8.0.13-cli
+FROM php:8.1-cli
 
 RUN apt-get update -y && apt-get install -y libmcrypt-dev
 
@@ -11,7 +11,4 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash \
 WORKDIR /app
 COPY . /app
 
-RUN composer install
-
-EXPOSE 8000
-CMD php bin/console server:run 0.0.0.0:8000
+EXPOSE 5656

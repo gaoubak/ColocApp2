@@ -9,7 +9,10 @@ services:
     ports:
       - '5656:80'
     volumes:
-      - ./backend/app:/var/www/html
+      - ./symfony:/var/www/symfony:cached
+      - ./logs/symfony:/var/www/symfony/var/log:cached
+    command: sh -c "composer install"
+    restart: always
 
   db:
     container_name: Database
