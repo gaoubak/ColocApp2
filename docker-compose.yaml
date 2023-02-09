@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+  backend:
+    container_name: Backend
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - '5656:80'
+    volumes:
+      - ./backend/app:/var/www/html
+
+  db:
+    container_name: Database
+    image: 'mariadb'
+    restart: always
+    environment:
+      MYSQL_DATABASE: data
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      # Pour lancer un dump automatiquement au montage du conteneur
+      - ./backend/database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+  phpmyadmin:
+    container_name: PhpMyAdmin
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      - PMA_ARBITRARY=1
+
+  frontend:
+    container_name: Frontend
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/app:/var/www/html
+      # use npm instead of yarn
+    command: sh -c "npm rebuild esbuild && npm run dev -- -o"
+    restart: always
+
