@@ -11,4 +11,8 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash \
 WORKDIR /app
 COPY . /app
 
+RUN composer install
+
 EXPOSE 5656
+
+CMD php bin/console server:start 0.0.0.0:5656
