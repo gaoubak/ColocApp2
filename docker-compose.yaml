@@ -34,16 +34,13 @@ services:
     environment:
       - PMA_ARBITRARY=1
 
-  frontend:
-    container_name: Frontend
+  nuxt-app:
     build:
-      context: ./Frontend
       dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
+      context: ./Frontend
     volumes:
-      - ./frontend/app:/var/www/html
-      # use npm instead of yarn
-    command: sh -c "npm rebuild esbuild && npm run dev -- -o"
-    restart: always
-
+      - ./Frontend/:/usr/app
+      - ./Frontend:/app
+    ports:
+      - "3000:3000"
+    command: npm run dev
